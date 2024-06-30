@@ -138,50 +138,51 @@ function SellDrugsToDrugdealer(playerId)
             })
         end
     end
-end
-
-RegisterServerEvent('drug:purchase')
-AddEventHandler('drug:purchase', function(itemName, itemPrice)
-    local _source = source
-    local xPlayer = ESX.GetPlayerFromId(_source)
-
-    if xPlayer then
-        local playerMoney = xPlayer.getMoney()
-
-        if playerMoney >= itemPrice then
-            -- Deduct money from player
-            xPlayer.removeMoney(itemPrice)
-
-            -- Give the item to the player
-            xPlayer.addInventoryItem(itemName, 1)
-
-            -- Inform the player
-            if ServerConfig.Notify == 'esx' then
-                TriggerClientEvent('esx:showNotification', _source, LangConfig.you_purchased_drugdealer .. ' ' .. itemName .. ' for $' .. itemPrice)
-            elseif ServerConfig.Notify == 'ox' then
-                TriggerClientEvent('ox_lib:notify', _source, {
-                    title = 'Drug System',
-                    description = LangConfig.you_purchased_drugdealer .. ' ' .. itemName .. ' for $' .. itemPrice,
-                    type = 'success'
-                })
+end  
+    RegisterServerEvent('drug:purchase')
+    AddEventHandler('drug:purchase', function(item, itemPrice)
+        local _source = source
+        local xPlayer = ESX.GetPlayerFromId(_source)
+    
+        print("Received purchase request for item: " .. item .. " with price $" .. itemPrice .. " from player ID " .. _source)  -- Debug print
+    
+        if xPlayer then
+            local playerMoney = xPlayer.getMoney()
+            print("Player money: $" .. playerMoney)  -- Debug print
+    
+            if playerMoney >= itemPrice then
+                xPlayer.removeMoney(itemPrice)
+                print("Removed $" .. itemPrice .. " from player ID " .. _source)  -- Debug print
+                xPlayer.addInventoryItem(item, 1)
+                print("Added item: " .. item .. " to player ID " .. _source)  -- Debug print
+    
+                if ServerConfig.Notify == 'esx' then
+                    TriggerClientEvent('esx:showNotification', _source, LangConfig.you_purchased_drugdealer .. ' ' .. item .. ' for $' .. itemPrice)
+                elseif ServerConfig.Notify == 'ox' then
+                    TriggerClientEvent('ox_lib:notify', _source, {
+                        title = 'Drug System',
+                        description = LangConfig.you_purchased_drugdealer .. ' ' .. item .. ' for $' .. itemPrice,
+                        type = 'success'
+                    })
+                end
+            else
+                print("Player does not have enough money")  -- Debug print
+                if ServerConfig.Notify == 'esx' then
+                    TriggerClientEvent('esx:showNotification', _source, LangConfig.you_have_no_money .. item)
+                elseif ServerConfig.Notify == 'ox' then
+                    TriggerClientEvent('ox_lib:notify', _source, {
+                        title = 'Drug System',
+                        description = LangConfig.you_have_no_money .. item,
+                        type = 'error'
+                    })
+                end
             end
-
         else
-            -- Inform the player they don't have enough money
-            if ServerConfig.Notify == 'esx' then
-                TriggerClientEvent('esx:showNotification', _source, LangConfig.you_have_no_money .. itemName)
-            elseif ServerConfig.Notify == 'ox' then
-                TriggerClientEvent('ox_lib:notify', _source, {
-                    title = 'Drug System',
-                    description = LangConfig.you_have_no_money .. itemName,
-                    type = 'error'
-                })
-            end
+            print('Player not found')
         end
-    else
-        print('Player not found')
-    end
-end)
+    end)
+    
+
 
 RegisterNetEvent('drugProcessing:process')
 AddEventHandler('drugProcessing:process', function(drug)
