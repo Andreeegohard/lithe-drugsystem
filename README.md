@@ -46,9 +46,9 @@ Item('illegal_joint', function(data, slot)
     TriggerEvent("drugsystem:smokeeffect")
 end)
 
-
+```
 ### Add the following item definitions to `data/items.lua `
-
+```lua
 ['banana_kush'] = {
     label = 'Banana Kush',
     description = "With this stuff you'll have a crazyyy high",
@@ -111,3 +111,4 @@ end)
     close = true,
     consume = 0,
 },
+```
