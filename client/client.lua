@@ -154,17 +154,16 @@ function DrugDealerShopMenu()
         }
     }
 
-    -- Check if DrugDealerItems is defined and is a table
     if DrugDealerConfig.DrugDealerItems and type(DrugDealerConfig.DrugDealerItems) == "table" then
         for _, item in ipairs(DrugDealerConfig.DrugDealerItems) do
-            if item.name and item.price and item.icon then  -- Ensure each item has an icon defined
+            if item.name and item.price and item.icon then
                 table.insert(options, {
                     title = item.name,
                     description = '$' .. item.price,
-                    icon = item.icon,  -- Use the icon path specified in DrugDealerConfig
+                    icon = item.icon,
                     onSelect = function()
-                        -- Trigger server event for purchase
-                        TriggerServerEvent('drug:purchase', item.name, item.price)
+                        print("Purchasing item: " .. item.name .. " (" .. item.item .. ") for $" .. item.price)  -- Debug print
+                        TriggerServerEvent('drug:purchase', item.item, item.price)
                     end,
                 })
             else
@@ -175,7 +174,6 @@ function DrugDealerShopMenu()
         print("Error: DrugDealerItems not found or not properly defined")
     end
 
-    -- Register the context
     lib.registerContext({
         id = 'drugdealer_shopmenu',
         title = LangConfig.title_drugdealer,
