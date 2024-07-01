@@ -326,7 +326,6 @@ CreateThread(function()
     SetModelAsNoLongerNeeded(model)
     exports.ox_target:addLocalEntity(npc, options)
 end)
-
 function CannabisDispensaryShopMenu()
     local options = {
         {
@@ -343,8 +342,8 @@ function CannabisDispensaryShopMenu()
                     description = '$' .. item.price,
                     icon = item.icon,  -- Use the icon path specified in CannabisDispensaryConfig
                     onSelect = function()
-                        -- Trigger server event for purchase
-                        TriggerServerEvent('cannabis:purchase', item.name, item.price)
+                        -- Trigger server event for purchase, using item identifier
+                        TriggerServerEvent('cannabis:purchase', item.item, item.price)
                     end,
                 })
             else
@@ -362,6 +361,7 @@ function CannabisDispensaryShopMenu()
         options = options
     })
 end
+
 
 
 RegisterCommand("leva", function()
@@ -451,8 +451,8 @@ function iniziaEffettoSmoke()
             car = true,
         },
         anim = {
-            dict = 'anim@amb@business@weed@weed_smoking',
-            clip = 'weed_smoking_base'
+            dict = 'switch@michael@smoking',
+            clip = 'michael_smoking_loop'
         },
         prop = {
             model = `prop_ld_flow_bottle`,
