@@ -234,40 +234,39 @@ end)
 RegisterCommand('clearTasks', function(source, args, rawCommand)
     TriggerClientEvent('clearPedTasks', source)
 end, false)
-
 RegisterServerEvent('cannabis:purchase')
-AddEventHandler('cannabis:purchase', function(itemName, itemPrice)
+AddEventHandler('cannabis:purchase', function(item, itemPrice)
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
 
+    print("Received purchase request for item: " .. item .. " with price $" .. itemPrice .. " from player ID " .. _source)  -- Debug print
+
     if xPlayer then
         local playerMoney = xPlayer.getMoney()
+        print("Player money: $" .. playerMoney)  -- Debug print
 
         if playerMoney >= itemPrice then
-            -- Deduct money from player
             xPlayer.removeMoney(itemPrice)
+            print("Removed $" .. itemPrice .. " from player ID " .. _source)  -- Debug print
+            xPlayer.addInventoryItem(item, 1)
+            print("Added item: " .. item .. " to player ID " .. _source)  -- Debug print
 
-            -- Give the item to the player
-            xPlayer.addInventoryItem(itemName, 1)
-
-            -- Inform the player
             if ServerConfig.Notify == 'esx' then
-                TriggerClientEvent('esx:showNotification', _source, LangConfig.you_purchased_cannabisseller .. ' ' .. itemName .. ' for $' .. itemPrice)
+                TriggerClientEvent('esx:showNotification', _source, LangConfig.you_purchased_cannabisseller .. ' ' .. item .. ' for $' .. itemPrice)
             elseif ServerConfig.Notify == 'ox' then
                 TriggerClientEvent('ox_lib:notify', _source, {
-                    title = 'Drug System',
-                    description = LangConfig.you_purchased_cannabisseller .. ' ' .. itemName .. ' for $' .. itemPrice,
+                    title = 'Cannabis Dispensary',
+                    description = LangConfig.you_purchased_cannabisseller .. ' ' .. item .. ' for $' .. itemPrice,
                     type = 'success'
                 })
             end
-
         else
-            -- Inform the player they don't have enough money
+            print("Player does not have enough money")  -- Debug print
             if ServerConfig.Notify == 'esx' then
                 TriggerClientEvent('esx:showNotification', _source, LangConfig.you_have_no_money)
             elseif ServerConfig.Notify == 'ox' then
                 TriggerClientEvent('ox_lib:notify', _source, {
-                    title = 'Drug System',
+                    title = 'Cannabis Dispensary',
                     description = LangConfig.you_have_no_money,
                     type = 'error'
                 })
