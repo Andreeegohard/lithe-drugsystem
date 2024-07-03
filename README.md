@@ -55,7 +55,7 @@ end)
     weight = 10,
     stack = true,
     close = true,
-    consume = 0,
+    consume = 1,
 },
 
 ['joint'] = {
@@ -64,7 +64,7 @@ end)
     weight = 10,
     stack = true,
     close = true,
-    consume = 0,
+    consume = 1,
 },
 
 ['illegal_joint'] = {
@@ -73,7 +73,7 @@ end)
     weight = 10,
     stack = true,
     close = true,
-    consume = 0,
+    consume = 1,
 },
 
 ['lsd_paper'] = {
@@ -82,7 +82,7 @@ end)
     weight = 10,
     stack = true,
     close = true,
-    consume = 0,
+    consume = 1,
 },
 
 ['heroin'] = {
@@ -91,7 +91,7 @@ end)
     weight = 15,
     stack = true,
     close = true,
-    consume = 0,
+    consume = 1,
 },
 
 ['meth'] = {
@@ -100,7 +100,7 @@ end)
     weight = 15,
     stack = true,
     close = true,
-    consume = 0,
+    consume = 1,
 },
 
 ['lean'] = {
@@ -109,6 +109,6 @@ end)
     weight = 20,
     stack = true,
     close = true,
-    consume = 0,
+    consume = 1,
 },
 ```
